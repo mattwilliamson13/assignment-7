@@ -1,0 +1,87 @@
+---
+title: "Attribute operations with dplyr"
+author: "Matt Williamson"
+date: "9/30/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Your assignment
+
+The goals for this assignment are to:
+
+Learning Objectives for this assignment are:
+
+* get comfortable filtering features and selecting fields
+* practice using `mutate` and `summarise` to create new fields
+* practice `_join` operations to develop dataframes for subsequent analysis
+
+By the end of this assignment you should have an `sf` object that has the boundaries of US states and contains information on how much money those states have recieved from the sales of parcels on Native American lands and how much money they've recieved in Rural Development grants from the federal government.
+
+
+## Step 1: Load your packages
+We will rely on the `sf`, `tigris`, and `tidyverse` packages for this assignment. Load them here
+```{r packageload}
+
+```
+
+
+## Step 2: Load and inspect the data
+
+The `/session12` folder in our shared drive on the network contains a variety of `.csv` files. The `Parcels.csv` file contains information on the sale of parcels including how much they raised for the endowments of various universities. The `Universities.csv` file contains information on each university (including which state it's located within). The remaining 2 csvs contain information on rural development grants.
+```{r loaddata}
+
+```
+
+* __Question 1:__ How many observations are in each dataset (both the spatial and tabular datasets)?
+* __Question 2:__ Which columns contain the information on a) how much money was raised from the sale of parcels and b) how much money has been awarded via USDA Rural Development Grants (in the USDA Community Facilities Loans and Grants as of 09.01.2016.csv file)?
+* __Question 3:__ Which columns contain the information necessary to subset the data to the relevant states and recipients?
+
+
+## Step 3: Filter features and select the relevant fields from each dataset
+Given where we trying to get to (an `sf` object that provides information on money raised from parcel sales and money granted from the USDA), use `filter` and `select` to subset the datasets so that they only contain the relevant features and fields.
+
+```{r subdata}
+
+```
+
+
+## Step 4: Let's calculate some state level values 
+Use `group_by` and `aggregate` to calculate the total amount of USDA grants awarded to each state 
+
+```{r aggregate}
+
+```
+
+* __Question 4:__ Which state has recieved the most money from the USDA? How much did they get?
+
+## Step 5: Join the parcel data to the university location data
+Because the parcel dataset only tells us which university recieved the funds, we need to figure out where those universities are located. Use a join to combine the two datasets
+
+```{r joindata}
+
+```
+* __Question 5:__ How many rows does the join produce? How do you know this is correct?
+
+## Step 6: Now let's estimate the total amount of money raised for the endowments of each school and then assign that a state
+
+Similar to step 4 you'll need to group observations and then calculate the aggregated value
+```{r aggagain}
+
+```
+
+* __Question 5:__ Which state has recieved the most money from parcel sales? How much did they recieve?
+
+
+## Step 7: Join this to some spatial data
+
+We can use `tigris::states()` to download a shapefile of all 50 states in the US. Do that here and join the attribute table you just created to that state dataset
+```{r dljoin}
+
+```
+
+## Bonus: Use plot to visualize the different dollar amounts
